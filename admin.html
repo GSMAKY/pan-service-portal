@@ -1,1 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin Dashboard — PAN Service Portal</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="dashboard-body">
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="dashboard-sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span>🛡️</span>
+      <span>PAN<b>Portal</b> Admin</span>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="sidebar-link active" data-page="dashboard">📊 Dashboard</button>
+      <button class="sidebar-link" data-page="users">👥 Users</button>
+      <button class="sidebar-link" data-page="requests">📋 Requests</button>
+      <button class="sidebar-link" data-page="transactions">💳 Transactions</button>
+      <button class="sidebar-link" data-page="logs">📝 Logs</button>
+      <button class="sidebar-link" data-page="settings">⚙️ Settings</button>
+      <button class="sidebar-link logout" id="logout-btn">🚪 Logout</button>
+    </nav>
+  </aside>
 
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <main class="dashboard-main" id="dashboard-main">
+    <!-- Header -->
+    <div class="dashboard-header">
+      <h1 id="page-title">Dashboard</h1>
+      <div class="dashboard-header-actions">
+        <button class="btn-icon" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
+        <button class="btn-icon" id="theme-toggle-admin" aria-label="Toggle dark mode">🌙</button>
+      </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="page-dashboard" class="admin-page">
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card"><div class="stat-label">Total Users</div><div class="stat-value" id="stat-users">—</div></div>
+        <div class="stat-card"><div class="stat-label">Total Requests</div><div class="stat-value" id="stat-requests">—</div></div>
+        <div class="stat-card"><div class="stat-label">Today</div><div class="stat-value" id="stat-today">—</div></div>
+        <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-value" id="stat-pending">—</div></div>
+      </div>
+      <div class="chart-container">
+        <h3>Applications (Last 7 Days)</h3>
+        <div class="chart-placeholder" id="chart-bars"></div>
+      </div>
+    </div>
+
+    <!-- Users Page -->
+    <div id="page-users" class="admin-page hidden">
+      <div class="filters-bar">
+        <input class="filter-input" id="users-search" placeholder="Search by name or email..." />
+        <button class="btn btn-primary" id="export-users-csv">📥 Export CSV</button>
+      </div>
+      <div class="table-container">
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody id="users-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="users-pagination"></div>
+    </div>
+
+    <!-- Requests Page -->
+    <div id="page-requests" class="admin-page hidden">
+      <div class="filters-bar">
+        <input class="filter-input" id="requests-search" placeholder="Search by reference or Aadhaar..." />
+        <select class="filter-input" id="requests-status-filter"><option value="">All Status</option><option value="pending">Pending</option><option value="processing">Processing</option><option value="completed">Completed</option><option value="rejected">Rejected</option></select>
+        <button class="btn btn-primary" id="export-requests-csv">📥 Export CSV</button>
+      </div>
+      <div class="table-container">
+        <table class="admin-table">
+          <thead><tr><th>Ref #</th><th>Aadhaar</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="requests-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="requests-pagination"></div>
+    </div>
+
+    <!-- Transactions Page -->
+    <div id="page-transactions" class="admin-page hidden">
+      <div class="filters-bar">
+        <input class="filter-input" id="transactions-search" placeholder="Search by transaction ID..." />
+        <button class="btn btn-primary" id="export-transactions-csv">📥 Export CSV</button>
+      </div>
+      <div class="table-container">
+        <table class="admin-table">
+          <thead><tr><th>Transaction ID</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody id="transactions-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="transactions-pagination"></div>
+    </div>
+
+    <!-- Logs Page -->
+    <div id="page-logs" class="admin-page hidden">
+      <div class="filters-bar">
+        <input class="filter-input" id="logs-search" placeholder="Search logs..." />
+      </div>
+      <div class="table-container">
+        <table class="admin-table">
+          <thead><tr><th>Timestamp</th><th>Level</th><th>Message</th></tr></thead>
+          <tbody id="logs-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="logs-pagination"></div>
+    </div>
+
+    <!-- Settings Page -->
+    <div id="page-settings" class="admin-page hidden">
+      <div class="settings-form">
+        <div class="form-group">
+          <label for="set-api-url">API URL</label>
+          <input id="set-api-url" placeholder="https://script.google.com/..." />
+        </div>
+        <div class="form-group">
+          <label for="set-api-key">API Key</label>
+          <input id="set-api-key" type="password" placeholder="Enter API key" />
+        </div>
+        <div class="form-group">
+          <label for="set-site-name">Site Name</label>
+          <input id="set-site-name" placeholder="PAN Service Portal" />
+        </div>
+        <div class="form-group">
+          <label for="set-contact-email">Contact Email</label>
+          <input id="set-contact-email" type="email" placeholder="support@example.com" />
+        </div>
+        <button class="btn btn-primary" id="save-settings">💾 Save Settings</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
