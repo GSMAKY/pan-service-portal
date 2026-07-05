@@ -223,6 +223,79 @@
     });
   });
 
-  // ─── Scroll Effects ─────────────────────────────────────
-  let last
-$$
+ // ─── Scroll Effects ─────────────────────────────────────
+  let lastScroll = 0;
+
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+
+    // Header shadow on scroll
+    header.classList.toggle('scrolled', currentScroll > 50);
+
+    // Active nav link highlight
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach(section => {
+      const top = section.offsetTop - 120;
+      const bottom = top + section.offsetHeight;
+      const id = section.getAttribute('id');
+      const link = headerNav.querySelector(`[href="#${id}"]`);
+      if (link) {
+        link.classList.toggle('active', currentScroll >= top && currentScroll < bottom);
+      }
+    });
+
+    lastScroll = currentScroll;
+  });
+
+  // ─── FAQ Accordion ──────────────────────────────────────
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isActive = item.classList.contains('active');
+
+      // Close all FAQ items
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+
+      if (!isActive) item.classList.add('active');
+    });
+  });
+
+  // ─── Intersection Observer for Animations ───────────────
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+  );
+
+  document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+
+  // ─── Event Listeners ─────────────────────────────────────
+  aadhaarInput.addEventListener('input', formatAadhaar);
+  form.addEventListener('submit', handleSubmit);
+  themeToggle.addEventListener('click', toggleTheme);
+
+  // ─── Init ────────────────────────────────────────────────
+  initTheme();
+
+  // Hide global loader on page load
+  window.addEventListener('load', () => {
+    globalLoader.classList.add('hidden');
+    globalLoader.classList.remove('loader-active');
+  });
+
+  // Fallback: hide loader after 3s max
+  setTimeout(() => {
+    if (!globalLoader.classList.contains('hidden')) {
+      globalLoader.classList.add('hidden');
+    }
+  }, 3000);
+
+  console.log(`%c${APP_CONFIG.APP_NAME} v${APP_CONFIG.APP_VERSION}`, 'color: #FF6B35; font-weight: bold; font-size: 1.2rem;');
+
+})();
