@@ -8,10 +8,10 @@
 
 const APP_CONFIG = Object.freeze({
   // ─── Google Apps Script Web App Endpoint ─────────────────────
-  API_URL: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbxKJ5nOquRK1_xxFLtVhhHSMgNuU0NWv04Vh1Ag3aj2TjCccIkrolXjJo0XN7Sn3u1P/exec',
   
   // ─── API Authentication Key ─────────────────────────────────
-  API_KEY: 'your-secret-api-key-change-in-production',
+  API_KEY: '4feb601e-2316-4dda-8d91-28c89cdb2335',
 
   // ─── App Metadata ────────────────────────────────────────────
   APP_NAME: 'PAN Service Portal',
